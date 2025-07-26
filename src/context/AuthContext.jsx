@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   const { toast } = useToast();
 
   // ใช้ Heroku backend URL
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://your-backend-app.herokuapp.com';
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://backendfriends-appname-3ba809a4eedc.herokuapp.com';
 
   // Check if user is logged in on app start
   useEffect(() => {
