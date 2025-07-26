@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Users, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
-import { userProfile, recentActivitiesProfile } from '@/data/userProfileData';
+import { userProfile as mockUserProfile, recentActivitiesProfile } from '@/data/userProfileData';
 import ProfileInfoCard from '@/components/profile/ProfileInfoCard';
 import SubscriptionStatusCard from '@/components/profile/SubscriptionStatusCard';
 import QuickActionsCard from '@/components/profile/QuickActionsCard';
@@ -18,12 +18,32 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [subscription, setSubscription] = useState(null);
+  const [userProfile, setUserProfile] = useState(mockUserProfile);
 
   useEffect(() => {
+    // Subscription logic
     const savedSubscription = localStorage.getItem('userSubscription');
     if (savedSubscription) {
       setSubscription(JSON.parse(savedSubscription));
     }
+
+    // Fetch LINE user profile
+    fetch('https://backendfriends-appname-3ba809a4eedc.herokuapp.com/auth/me', {
+      credentials: 'include',
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          setUserProfile(prev => ({
+            ...prev,
+            name: data.user.displayName || prev.name,
+            lineId: data.user.lineId || prev.lineId,
+            avatar: data.user.pictureUrl || prev.avatar,
+            // เพิ่ม field อื่นๆ ตามต้องการ
+          }));
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const handleCancelSubscription = () => {
