@@ -82,26 +82,51 @@ const HomePage = () => {
                 เข้าสู่ระบบด้วย LINE
               </Button>
             ) : (
-              <div className="flex items-center space-x-2">
-                {user && (
-                  <div className="flex items-center space-x-2 mr-4">
-                    <img 
-                      src={user.pictureUrl} 
-                      alt={user.displayName}
-                      className="w-8 h-8 rounded-full"
-                    />
-                    <span className="text-sm font-medium text-gray-700">{user.displayName}</span>
+              <div className="flex items-center space-x-4">
+                {/* User Profile Card */}
+                <div className="flex items-center space-x-3 bg-white rounded-lg px-4 py-2 shadow-sm border border-gray-200">
+                  <img 
+                    src={user?.pictureUrl} 
+                    alt={user?.displayName}
+                    className="w-10 h-10 rounded-full border-2 border-green-500"
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-sm font-semibold text-gray-800">{user?.displayName}</span>
+                    <span className="text-xs text-gray-500">สมาชิก</span>
                   </div>
-                )}
-                <Button variant="ghost" onClick={() => navigate('/profile')} className="text-gray-700 hover:bg-gray-100">
-                  โปรไฟล์
-                </Button>
-                <Button variant="ghost" onClick={() => navigate('/admin')} className="text-gray-700 hover:bg-gray-100">
-                  แอดมิน
-                </Button>
-                <Button variant="ghost" onClick={logout} className="text-gray-700 hover:bg-gray-100">
-                  <LogOut className="w-4 h-4" />
-                </Button>
+                </div>
+                
+                {/* Navigation Buttons */}
+                <div className="flex items-center space-x-2">
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => navigate('/profile')} 
+                    className="text-gray-700 hover:bg-gray-100"
+                  >
+                    โปรไฟล์
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => navigate('/activities')} 
+                    className="text-gray-700 hover:bg-gray-100"
+                  >
+                    กิจกรรม
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => navigate('/admin')} 
+                    className="text-gray-700 hover:bg-gray-100"
+                  >
+                    แอดมิน
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    onClick={logout} 
+                    className="text-gray-700 hover:bg-gray-100"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             )}
           </div>

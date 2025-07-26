@@ -8,10 +8,13 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { toast } = useToast();
 
   // ใช้ Heroku backend URL
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://backendfriends-appname-3ba809a4eedc.herokuapp.com';
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://backendfriends-appname-3ba809a4eedc.herokuapp.com';
+
+  console.log('AuthContext initialized with BACKEND_URL:', BACKEND_URL);
 
   // Check if user is logged in on app start
   useEffect(() => {
@@ -20,13 +23,25 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
+      console.log('Checking auth status...');
       const response = await fetch(`${BACKEND_URL}/auth/me`, {
-        credentials: 'include' // Important for cookies
+        credentials: 'include', // Important for cookies
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
+      
+      console.log('Auth response status:', response.status);
+      console.log('Auth response headers:', response.headers);
+      
       const data = await response.json();
+      console.log('Auth response data:', data);
       
       if (data.user) {
+        console.log('User found:', data.user);
         setUser(data.user);
+      } else {
+        console.log('No user found');
       }
     } catch (error) {
       console.error('Auth check failed:', error);
@@ -64,6 +79,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     loading,
+    error,
     loginWithLine,
     logout,
     isLoggedIn: !!user
